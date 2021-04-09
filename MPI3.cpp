@@ -1,67 +1,60 @@
-#include <iostream>
-#include <iomanip>  
-#include <chrono> 
-#include "mpi.h" 
-using namespace std;
-int main(int argc, char* argv[]) {
-	setlocale(LC_ALL, "Russian");
-	srand(time(NULL));
+#include <mpi.h>
+#include <stdio.h>
 
-	int length1 = 1000; ;
-	double** a1 = new double* [length1];
-	double** b1 = new double* [length1];
-	double** res1 = new double* [length1];
+#define SIZE 500
 
-	for (int i = 0; i < length1; i++)
-	{
-		a1[i] = new double[length1];
-		for (int j = 0; j < length1; j++)
-		{
-			a1[i][j] = (100 + (double)(rand() % 1000)) / 100;
-		}
+int A[SIZE][SIZE], B[SIZE][SIZE], C[SIZE][SIZE];
 
-	}
+void fill_matrix(int m[SIZE][SIZE])
+{
+  static int n=0;
+  int i, j;
+  for (i=0; i<SIZE; i++)
+    for (j=0; j<SIZE; j++)
+      m[i][j] = n++;
+}
 
-	for (int i = 0; i < length1; i++)
-	{
-		b1[i] = new double[length1];
-		for (int j = 0; j < length1; j++)
-		{
-			b1[i][j] = (100 + (double)(rand() % 1000)) / 100;
-		}
+void print_matrix(int m[SIZE][SIZE])
+{
+  int i, j = 0;
+  for (i=0; i<SIZE; i++) {
+    printf("\n\t| ");
+    for (j=0; j<SIZE; j++)
+      printf("%2d ", m[i][j]);
+    printf("|");
+  }
+}
 
-	}
 
-	for (int i = 0; i < length1; i++)
-	{
-		res1[i] = new double[length1];
-		for (int j = 0; j < length1; j++)
-		{
-			res1[i][j] = 0;
-		}
-	}
+int main(int argc, char *argv[])
+{
+  int myrank, P, from, to, i, j, k;
+  MPI_Status status;
+  
+  MPI_Init (&argc, &argv);
+  MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
+  MPI_Comm_size(MPI_COMM_WORLD, &P); 
 
-	auto start = chrono::steady_clock::now();
-	MPI_Init(&argc, &argv);
-	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-	MPI_Comm_size(MPI_COMM_WORLD, &size);
-	for (int i = 0; i < length1; i++)
-	{
-		for (int j = 0; j < length1; j++)
-		{
-			res1[i][j] = 0;
-			for (int k = 0; k < length1; k++)
-			{
-				res1[i][j] += ((a1[i][k]) * (b1[k][j]));
-			}
-		}
-	}
-	MPI_Reduce(&res1, &all_res1, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-	MPI_Finalize();
-	auto end = chrono::steady_clock::now();
-	chrono::duration<double> elapsed_seconds = end - start;
-	cout « "time 1: " « elapsed_seconds.count() « "s\n";
-	delete[] a1;
-	delete[] b1;
-	return 0;
+  from = myrank * SIZE/P;
+  to = (myrank+1) * SIZE/P;
+
+  if (myrank==0) {
+    fill_matrix(A);
+    fill_matrix(B);
+  }
+
+  MPI_Bcast (B, SIZE*SIZE, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Scatter (A, SIZE*SIZE/P, MPI_INT, A[from], SIZE*SIZE/P, MPI_INT, 0, MPI_COMM_WORLD);
+
+  for (i=from; i<to; i++) 
+    for (j=0; j<SIZE; j++) {
+      C[i][j]=0;
+      for (k=0; k<SIZE; k++)
+	C[i][j] += A[i][k]*B[k][j];
+    }
+
+  MPI_Gather (C[from], SIZE*SIZE/P, MPI_INT, C, SIZE*SIZE/P, MPI_INT, 0, MPI_COMM_WORLD);
+
+  MPI_Finalize();
+  return 0;
 }

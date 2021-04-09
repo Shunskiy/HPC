@@ -22,7 +22,7 @@ int main()
 		b1[i] = (100 + (double)(rand() % 1000)) / 100;
 	}
 	auto start = chrono::steady_clock::now();
-#pragma omp parallel for num_threads(4)
+#pragma omp parallel for num_threads(4) reduction(+: res1)
 	for (int i = 0; i < length1; i++)
 	{
 		res1 += a1[i] * b1[i];
@@ -49,7 +49,7 @@ int main()
 		res2[i] = 0;
 	}
 	auto start2 = chrono::steady_clock::now();
-#pragma omp parallel for num_threads(4)
+#pragma omp parallel for num_threads(4) reduction(+: res2)
 	for (int i = 0; i < length2; i++)
 	{
 		for (int j = 0; j < length2; j++)
@@ -75,7 +75,6 @@ int main()
 			a3[i][j] = (100 + (double)(rand() % 1000)) / 100;
 		}
 	}
-	//cout << "матрицa b : " << endl;
 	for (int i = 0; i < length3; i++)
 	{
 		b3[i] = new double[length3];
@@ -93,7 +92,7 @@ int main()
 		}
 	}
 	auto start3 = chrono::steady_clock::now();
-#pragma omp parallel for num_threads(4)
+#pragma omp parallel for num_threads(4) reduction(+: res3)
 	for (int i = 0; i < length3; i++)
 	{
 		for (int j = 0; j < length3; j++)

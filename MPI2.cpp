@@ -24,15 +24,12 @@ int main(int argc, char** argv)
         {
             for (j = 0; j < n; j++)
             {
-                if (i == j)
-                    a[i * n + j] = 1;
-                else
-                    a[i * n + j] = 2;
+                    a[i * n + j] = rand();
             }
         }
         for (i = 0; i < n; i++)
         {
-            x[i] = i + 1;
+            x[i] = rand();
         }
     }
     double t = MPI_Wtime();

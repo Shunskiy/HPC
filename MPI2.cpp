@@ -1,37 +1,62 @@
-#include <iostream> 
-#include <iomanip> 
-#include <chrono>
-#include "mpi.h" 
+#include <stdio.h>
+#include <stdlib.h>
+#include "mpi.h"
+#include <iostream>
 using namespace std;
-int main(int argc, char* argv[])
-{
-	setlocale(LC_ALL, "Russian");
-	srand(time(NULL));
 
-	int length1 = 100000;
-	double* a1 = new double[length1];
-	double* b1 = new double[length1];
-	double res1 = 0, all_res1;
-	int size, rank;
-	for (int i = 0; i < length1; i++)
-	{
-		a1[i] = (100 + (double)(rand() % 1000)) / 100;
-	}
-	for (int i = 0; i < length1; i++)
-	{
-		b1[i] = (100 + (double)(rand() % 1000)) / 100;
-	}
-	auto start = chrono::steady_clock::now();
-	MPI_Init(&argc, &argv);
-	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-	MPI_Comm_size(MPI_COMM_WORLD, &size);
-	for (int i = 0; i < length1; i++) {
-		res1 += a1[i] * b1[i];
-	}
-	MPI_Reduce(&res1, &all_res1, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-	MPI_Finalize();
-	auto end = chrono::steady_clock::now();
-	chrono::duration<double> elapsed_seconds = end - start;
-	cout << "time 1: " << elapsed_seconds.count() << "s\n";
-	delete[] a1; delete[] b1; return 0;
+
+int main(int argc, char** argv)
+{
+    int rank, size;
+    int i, j, n = 1000;
+    MPI_Init(&argc, &argv);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    int n_partial = n / size;
+    double* a_partial = new double[n_partial * n];
+    double* x = new double[n];
+    double* y_partial = new double[n_partial];
+    double* y_total = new double[n];
+    double* a = new double[n * n];
+    if (rank == 0)
+    {
+        for (i = 0; i < n; i++)
+        {
+            for (j = 0; j < n; j++)
+            {
+                if (i == j)
+                    a[i * n + j] = 1;
+                else
+                    a[i * n + j] = 2;
+            }
+        }
+        for (i = 0; i < n; i++)
+        {
+            x[i] = i + 1;
+        }
+    }
+    double t = MPI_Wtime();
+    MPI_Bcast(x, n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Scatter(a, n_partial * n, MPI_DOUBLE, a_partial, n_partial * n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    for (i = 0; i < n_partial; i++)
+    {
+        y_partial[i] = 0.0;
+        for (j = 0; j < n; j++)
+            y_partial[i] += a_partial[i * n + j] * x[j];
+    }
+    //собираем результат в нулевом процессе
+    MPI_Gather(y_partial, n_partial, MPI_DOUBLE, y_total, n_partial, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    t = MPI_Wtime() - t;
+    if (rank == 0)
+    {
+        cout << "time = " << t;
+    }
+    delete[] a_partial;
+    delete[] a;
+    delete[] x;
+    delete[] y_partial;
+    delete[] y_total;
+
+    MPI_Finalize();
+    return 0;
 }

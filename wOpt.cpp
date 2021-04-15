@@ -10,6 +10,7 @@ int main()
 	int length1 = 100000;
 	int length2 = 10000;
 	int length3 = 1000;
+	int i = 0, j = 0, k = 0;
 	double res1 = 0;
 	double* a1 = new double[length1];
 	double* b1 = new double[length1];
@@ -22,7 +23,7 @@ int main()
 		b1[i] = (100 + (double)(rand() % 1000)) / 100;
 	}
 	auto start = chrono::steady_clock::now();
-#pragma omp parallel for num_threads(4) reduction(+: res1)
+#pragma omp parallel for num_threads(12) reduction(+: res1)
 	for (int i = 0; i < length1; i++)
 	{
 		res1 += a1[i] * b1[i];
@@ -49,7 +50,7 @@ int main()
 		res2[i] = 0;
 	}
 	auto start2 = chrono::steady_clock::now();
-#pragma omp parallel for num_threads(4) reduction(+: res2)
+#pragma omp parallel for num_threads(12) shared(res2, a2, b2) private(i,j)
 	for (int i = 0; i < length2; i++)
 	{
 		for (int j = 0; j < length2; j++)
@@ -92,7 +93,7 @@ int main()
 		}
 	}
 	auto start3 = chrono::steady_clock::now();
-#pragma omp parallel for num_threads(4) reduction(+: res3)
+#pragma omp parallel for num_threads(12) shared(res3, a3, b3) private(i,j,k)
 	for (int i = 0; i < length3; i++)
 	{
 		for (int j = 0; j < length3; j++)

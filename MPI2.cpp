@@ -44,7 +44,6 @@ int main(int argc, char** argv)
         for (j = 0; j < n; j++)
             y_partial[i] += a_partial[i * n + j] * x[j];
     }
-    //собираем результат в нулевом процессе
     MPI_Gather(y_partial, n_partial, MPI_DOUBLE, y_total, n_partial, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     t = MPI_Wtime() - t;
     if (rank == 0)

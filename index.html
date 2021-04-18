@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Высокопроизводительные вычисления</title>
+</head>
+
+<body>
+    <main class="main">
+        <div class="main__container">
+            <section class="main__start">
+                <h1 class="main__title">Высокопроизводительные вычисления</h1>
+                <ul class="main__task-list">
+                    <li class="main__task-item">
+                        <a href="#task-first" class="main__task-link">Задание №1</a>
+                    </li>
+                    <li class="main__task-item">
+                        <a href="#task-second" class="main__task-link">Задание №2</a>
+                    </li>
+                    <li class="main__task-item">
+                        <a href="#task-third" class="main__task-link">Задание №3</a>
+                    </li>
+                    <li class="main__task-item">
+                        <a href="#task-fourth" class="main__task-link">Задание №4</a>
+                    </li>
+                    <li class="main__task-item">
+                        <a href="#task-fifth" class="main__task-link">Задание №5</a>
+                    </li>
+                </ul>
+            </section>
+
+            <section id="task-first" class="main__task task task--first">
+                <h2 class="task__title">Задание №1</h2>
+                <p class="task__text task__text--before-table">
+                    Необходимо рассчитать теоретический производительность устройств и
+                    нарисовать таблицу
+                </p>
+                <table class="task__table">
+                    <thead class="task__table-head">
+                        <td class="task__cell">Устройтво</td>
+                        <td class="task__cell">Описание</td>
+                        <td class="task__cell">Теоретический результат, Gflop/s</td>
+                    </thead>
+                    <tr class="task__table-row">
+                        <td class="task__cell">Supercomputer Fugaku</td>
+                        <td class="task__cell">A64FX 48C 2.2GHz, Tofu interconnect D</td>
+                        <td class="task__cell">537,212,000</td>
+                    </tr>
+                    <tr class="task__table-row">
+                        <td class="task__cell">Christofari - SberCloud</td>
+                        <td class="task__cell">
+                            NVIDIA DGX-2, Xeon Platinum 8168 24C 2.7GHz, Mellanox InfiniBand
+                            EDR, NVIDIA Tesla V100, Nvidia
+                        </td>
+                        <td class="task__cell">8,789,800</td>
+                    </tr>
+                    <tr class="task__table-row">
+                        <td class="task__cell">Домашний компьютер</td>
+                        <td class="task__cell">???</td>
+                        <td class="task__cell">???</td>
+                    </tr>
+                    <tr class="task__table-row">
+                        <td class="task__cell">Компьютер в аудитории</td>
+                        <td class="task__cell">Intel i5-3570, 4 cores@3.4 GHz</td>
+                        <td class="task__cell">108.8</td>
+                    </tr>
+                    <tr class="task__table-row">
+                        <td class="task__cell">Телефон</td>
+                        <td class="task__cell">???</td>
+                        <td class="task__cell">???</td>
+                    </tr>
+                </table>
+                <div class="task__cpu-flops">
+                    <p class="task__text">
+                        Для того чтобы заполнить клетку с компьютером необходимо
+                        воспользоваться формулой
+                        <b class="task__text task__text--formul">(Скорость процессора в GHz)*(Число ядер)*(IPС)</b>
+                    </p>
+                    <ul class="task__list">
+                        <li class="task__list-item">
+                            IPC = <b class="task__text task__text--formul">4</b>, если
+                            процессор раньше 2012 года
+                        </li>
+                        <li class="task__list-item">
+                            IPC = <b class="task__text task__text--formul">8</b>, если
+                            2012-2015,
+                        </li>
+                        <li class="task__list-item">
+                            IPC = <b class="task__text task__text--formul">16</b>, если
+                            позже 2015
+                        </li>
+                    </ul>
+                    <div class="task__cpu-input">
+                        <input id="cpu-flops" class="task__input" type="number"
+                            placeholder="Скорость процессора в GHz" />
+                        <input id="cpu-cores" class="task__input" type="number" placeholder="Число ядер" />
+                        <select class="task__input"  name="cpu-year" id="cpu-year" placeholder="Год процессора">
+                            <option value="1">Процессор до 2012</option>
+                            <option value="2">Процессор 2012-2015</option>
+                            <option value="3">Процессор позже 2015</option>
+                        </select>
+                    </div>
+                    <button id="button-first" class="task__button" type="button" onclick="firstTask()">
+                        Рассчитать
+                    </button>
+                    <p class="task__result">
+                        Ответ: <b class="task__text task__result--first">0</b> GFlop/s
+                    </p>
+                </div>
+                <div class="task__cpu-flops">
+                    <p class="task__text">
+                        Для того чтобы заполнить клетку с телефоном необходимо
+                        воспользоваться формулой
+                        <b class="task__text task__text--formul">CPUскорость(GHz) · (Число ядер) · kOP · kSIMD · T</b>
+                    </p>
+                    <ul class="task__list">
+                        <li class="task__list-item">
+                            kOP = <b class="task__text task__text--formul">2</b>
+                        </li>
+                        <li class="task__list-item">
+                            kSIMD = <b class="task__text task__text--formul">2</b>
+                        </li>
+                        <li class="task__list-item">
+                            T = <b class="task__text task__text--formul">1</b>
+                        </li>
+                    </ul>
+                    <div class="task__cpu-input">
+                        <input id="mobile-flops" class="task__input" type="number"
+                            placeholder="Скорость процессора в GHz" />
+                        <input id="mobile-cores" class="task__input" type="number" placeholder="Число ядер" />
+                    </div>
+                    <button id="button-first" class="task__button" type="button" onclick="firstTaskMobile()">
+                        Рассчитать
+                    </button>
+                    <p class="task__result">
+                        Ответ <b class="task__text task__result--first-mobile">0</b> GFlop/s
+                    </p>
+                </div>
+            </section>
+
+            <section id="task-second" class="main__task task task--second">
+                <h2 class="task__title">Задание №2</h2>
+                <p class="task__text">
+                    Необходимо составить таблицу по результатам работы программы <b
+                        class="task__text task__text--accent">linpack-xtreme</b>
+                </p>
+                <p class="task__text task__text--linpack">
+                    Ссылки на <b class="task__text task__text--accent">linpack</b>:
+                <ul class="task__list task__list--linpack">
+                    <li class="task__list-item">
+                        Для <a target="_blank" href="https://www.techpowerup.com/download/linpack-xtreme/"
+                            class="task__link">Windows</a>
+                    </li>
+                    <li class="task__list-item">
+                        Для <a target="_blank"
+                            href="https://play.google.com/store/apps/details?id=org.skynetsoftware.linpack&hl=ru&gl=US"
+                            class="task__link">Android</a>
+                    </li>
+                    <li class="task__list-item">
+                        Для <a target="_blank" href="https://apps.apple.com/ru/app/linpack/id380883195"
+                            class="task__link">Ios</a>
+                    </li>
+                </ul>
+                </p>
+                <table class="task__table">
+                    <thead class="task__table-head">
+                        <td class="task__cell">Устройтво</td>
+                        <td class="task__cell">Описание</td>
+                        <td class="task__cell">Результат работы теста, Gflop/s</td>
+                    </thead>
+                    <tr class="task__table-row">
+                        <td class="task__cell">Supercomputer Fugaku</td>
+                        <td class="task__cell">A64FX 48C 2.2GHz, Tofu interconnect D</td>
+                        <td class="task__cell">442,010,000</td>
+                    </tr>
+                    <tr class="task__table-row">
+                        <td class="task__cell">Christofari - SberCloud</td>
+                        <td class="task__cell">
+                            NVIDIA DGX-2, Xeon Platinum 8168 24C 2.7GHz, Mellanox InfiniBand
+                            EDR, NVIDIA Tesla V100, Nvidia
+                        </td>
+                        <td class="task__cell">6,669,800</td>
+                    </tr>
+                    <tr class="task__table-row">
+                        <td class="task__cell">Домашний компьютер</td>
+                        <td class="task__cell">???</td>
+                        <td class="task__cell">???</td>
+                    </tr>
+                    <tr class="task__table-row">
+                        <td class="task__cell">Компьютер в аудитории</td>
+                        <td class="task__cell">Intel i5-3570, 4 cores@3.4 GHz</td>
+                        <td class="task__cell">70.2</td>
+                    </tr>
+                    <tr class="task__table-row">
+                        <td class="task__cell">Телефон</td>
+                        <td class="task__cell">???</td>
+                        <td class="task__cell">???</td>
+                    </tr>
+                </table>
+                <i class="task__text task__text--italic">Необходимо указать, для какой размерности делался тест, <b
+                        class="task__text task__text--italic task__text--accent">default = 15000</b></i>
+            </section>
+
+            <section id="task-third" class="main__task task task--third">
+                <h2 class="task__title">Задание №3</h2>
+                <article class="task__text">
+                    <p class="task__text">Устанавливаем виртуальную машину с Linux</p>
+                    <p class="task__text">
+                        Открываем терминал и пишем
+                        <b class="task__text task__text--accent">
+                            по очереди
+                        </b>
+                        следующие команды:
+                    </p>
+                    <ol class="task__list-code">
+                        <li class="task__list-item">
+                            <code class="task__text task__text--code">
+                               sudo apt-get install git
+                            </code>
+                        </li>
+                        <li class="task__list-item">
+                            <code class="task__text task__text--code">
+                               sudo apt-get install gcc
+                            </code>
+                        </li>
+                        <li class="task__list-item">
+                            <code class="task__text task__text--code">
+                               sudo apt-get install g++
+                            </code>
+                        </li>
+                        <li class="task__list-item">
+                            <code class="task__text task__text--code">
+                               sudo apt-get install make
+                            </code>
+                        </li>
+                        <li class="task__list-item">
+                            <code class="task__text task__text--code">
+                                git clone https://github.com/hpcg-benchmark/hpcg.git
+                            </code>
+                        </li>
+                        <li class="task__list-item">
+                            <code class="task__text task__text--code">
+                                cd hpcg
+                            </code>
+                        </li>
+                        <li class="task__list-item">
+                            <code class="task__text task__text--code">
+                                sudo nano Makefile
+                            </code>
+                            и меняем строчку
+                            <code class="task__text task__text--code">
+                                arch = Unknown
+                            </code>
+                            на
+                            <code class="task__text task__text--code">
+                            arch = GCC_OMP
+                        </code>
+                        </li>
+                        <li class="task__list-item">
+                            <code class="task__text task__text--code">
+                            cd bin 
+                        </code>
+                        </li>
+                        <li class="task__list-item">
+                            <code class="task__text task__text--code">
+                            ./xhpcg
+                        </code>
+                        </li>
+                        <li class="task__list-item">
+                            Используем команду
+                            <code class="task__text task__text--code">
+                            ls
+                        </code>
+                            и копируем название файла начинающегося с HPCG-benchmark
+                        </li>
+                        <li class="task__list-item">
+                            <code class="task__text task__text--code">
+                            cat (Название файла) | grep “Final Summary::”
+                        </code>
+                        </li>
+                    </ol>
+                    <p class="task__text">
+                        Результаты находятся в строчке HPCG result is VALID with a GFLOP/s rating =
+                        (Результат)
+                    </p>
+                    <p class="task__text">
+                        Если что-то не получается, можно глянуть в <a target="_blank"
+                            class="task__text task__text--link" href="https://github.com/hpcg-benchmark/hpcg">GitHub
+                            репозиторий HPCG</a>
+                    </p>
+                </article>
+            </section>
+
+            <section id="task-fourth" class="main__task task task--fourth">
+                <h2 class="task__title">Задание №4</h2>
+                <article class="task__text">
+                    Используя виртуальную машину из прошлого задание выполняем следующий код в терминале
+                    <ol class="task__list-number">
+                        <li class="task__list-item">
+                            <code class="task__text task__text--code">
+                                mkdir stream
+                            </code>
+                        </li>
+                        <li class="task__list-item">
+                            <code class="task__text task__text--code">
+                                cd stream
+                            </code>
+                        </li>
+                        <li class="task__list-item">
+                            <code class="task__text task__text--code">
+                                sudo wget https://www.cs.virginia.edu/stream/FTP/Code/stream.c
+                            </code>
+                        </li>
+                        <li class="task__list-item">
+                            <code class="task__text task__text--code">
+                                sudo gcc stream.c
+                            </code>
+                        </li>
+                        <li class="task__list-item">
+                            <code class="task__text task__text--code">
+                                ./a.out
+                            </code>
+                        </li>
+                    </ol>
+                    <P class="task__text">
+                        Результатом выпонения будет таблица, которую нужно будет переписать
+                    </P>
+
+                    <i class="task__text task__text--italic">
+                        Для ленивых можно зайти на <a target="_blank"
+                            href="https://rextester.com/l/c_online_compiler_gcc"
+                            class="task__text task__text--link task__text--italic">сайт</a>, который компелирует gcc,
+                        выполнить там код из
+                        <a target="_blank" href="https://www.cs.virginia.edu/stream/FTP/Code/stream.c"
+                            class="task__text task__text--link task__text--italic">этого файла</a> и получить ответ
+                    </i>
+                </article>
+            </section>
+
+            <section id="task-fifth" class="main__task task task--fifth">
+                <h2 class="task__title">Задание №5</h2>
+                <p class="task__text">
+                    Нужно построить график Roofline для своего ПК
+                </p>
+                <div class="task__good-links">
+                    <p class="task__text task__text--roofline-links">Полезные ссылки</p>
+                    <ul class="task__list task__list--roofline">
+                        <li class="task__item">
+                            Ссылка на
+                            <a target="_blank" href="https://github.com/Shunskiy/HPC"
+                                class="task__text task__text--link">
+                                GitHub с кодом программ
+                            </a>
+                        </li>
+                        <li class="task__item">
+                            Ссылка на
+                            <a target="_blank" href="https://www.desmos.com/calculator?lang=ru"
+                                class="task__text task__text--link">
+                                сайт, где строить график
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <table class="task__table task__table--roofline">
+                    <thead class="task__table-head">
+                        <td class="task__cell">Функция</td>
+                        <td class="task__cell">Кол-во операции</td>
+                        <td class="task__cell">Арифметическая интенсивность</td>
+                    </thead>
+                    <tr class="task__table-row">
+                        <td class="task__cell">Скалярное произведение</td>
+                        <td class="task__cell">2N</td>
+                        <td class="task__cell">2/3</td>
+                    </tr>
+                    <tr class="task__table-row">
+                        <td class="task__cell">Умножение матрицы на вектор</td>
+                        <td class="task__cell">
+                            2N<sup>2</sup>
+                        </td>
+                        <td class="task__cell">2</td>
+                    </tr>
+                    <tr class="task__table-row">
+                        <td class="task__cell">Умножение матрицы на матрицу</td>
+                        <td class="task__cell">
+                            2N<sup>3</sup>
+                        </td>
+                        <td class="task__cell">N/2</td>
+                    </tr>
+                </table>
+                <i class="task__text task__text--italic ">
+                    N - размерность операций
+                </i>
+                <p class="task__text task__text--after-table">
+                    Пишем код для функций в таблице или копируем его из репозитория
+                    <br>
+                    Что делают функции OpenMP можно узнать погуглив &#128513;
+                    <br>
+                    Для запуска MPI смотрим <a target="_blank"
+                        href="https://www.youtube.com/watch?v=4ozCfih75Uk&ab_channel=umkonline"
+                        class="task__text task__text--link">видео</a> и делаем как там показывается.
+                    <br>
+                    Что делают функции MPI написано на <a target="_blank" href="https://parallel.ru/vvv/mpi.html"
+                        class="task__text task__text--link">сайте</a>
+                </p>
+                <p class="task__text">
+                    Для построения основного графика необходимо воспользовать формулой: <b
+                        class="task__text task__text--accent">y = min(Пиковая
+                        производительность CPU, Скорость оперативной памяти * x)</b>
+                </p>
+                <p class="task__text">
+                    Для построения точек: <b class="task__text task__text--accent">(Арифметическая
+                        интенсивность, Кол-во операции/(Затраченное время * 10<sup>9</sup>))</b>
+                </p>
+            </section>
+        </div>
+    </main>
+    <script src="./main.js"></script>
+</body>
+
+</html>

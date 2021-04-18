@@ -1,0 +1,151 @@
+body {
+  margin: 0;
+  padding: 0;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 16px;
+}
+
+h1,
+p,
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+ul {
+  list-style: none;
+}
+
+.main__container {
+  width: 1280px;
+  margin: 0 auto;
+  padding: 20px 40px;
+}
+
+.main__start {
+  margin-bottom: 40px;
+}
+
+.main__title {
+  margin-bottom: 40px;
+
+  font-size: 36px;
+  text-align: center;
+}
+
+.main__task-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.main__task-link {
+  text-decoration: none;
+  color: #25252e;
+}
+
+.main__task-link:hover {
+  opacity: 0.3;
+}
+
+.task {
+  margin-bottom: 40px;
+}
+
+.task__button {
+  margin-top: 10px;
+}
+
+.task__list {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+
+.task__cpu-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.task__input {
+  height: 30px;
+  margin-top: 10px;
+}
+
+.task__result {
+  margin: 20px;
+  font-size: 16px;
+}
+
+.task__text--before-table {
+  margin-bottom: 30px;
+}
+
+.task__table {
+  width: 100%;
+  margin-bottom: 30px;
+
+  border: 1px solid #111111;
+  border-collapse: collapse;
+}
+
+.task__table thead {
+  text-align: center;
+}
+
+.task__table td {
+  border: 1px solid #111111;
+  padding: 10px;
+}
+
+.task__text--code {
+  background-color: #e6e6e6bd;
+}
+
+.task__list--linpack {
+  margin-top: 0;
+}
+
+.task__text--linpack {
+  margin-top: 30px;
+}
+
+.task__text--roofline-links {
+  margin-top: 30px;
+}
+
+.task__list--roofline {
+  margin-top: 0;
+}
+
+.task__table--roofline{
+    margin-bottom: 0;
+}
+
+.task__text--after-table{
+    margin-top: 30px;
+}
+
+@media (max-width: 1280px) {
+  body {
+    font-size: 10px;
+  }
+
+  .main__container {
+    width: 100%;
+    padding: 20px 20px;
+  }
+
+  .main__task-link {
+    justify-content: space-around;
+  }
+
+  .main__title {
+    font-size: 24px;
+  }
+}
